@@ -3,6 +3,8 @@
 using System;
 using System.Configuration;
 using System.Numerics;
+using System.Reflection.Metadata;
+using Bot;
 
 namespace EhterDelta.Bots.Dontnet
 {
@@ -10,13 +12,14 @@ namespace EhterDelta.Bots.Dontnet
     {
         static void Main(string[] args)
         {
-
-            if (args.Length < 1 || args[0] != "taker" && args[0] != "maker")
+            // Tells us which bot program to run
+            if (args.Length < 1 || args[0] != "taker" && args[0] != "maker" && args[0] != "custom")
             {
-                Console.WriteLine("Please run with 'taker' or 'maker' argument!");
+                Console.WriteLine("Please run with 'taker' or 'maker' or 'custom' argument!");
                 return;
             }
 
+            // maps the configuration file information to a model
             var config = new EtherDeltaConfiguration
             {
                 SocketUrl = ConfigurationManager.AppSettings["SocketUrl"],
@@ -32,6 +35,7 @@ namespace EhterDelta.Bots.Dontnet
                 GasLimit = new BigInteger(UInt64.Parse(ConfigurationManager.AppSettings["GasLimit"]))
             };
 
+            // create a console logger if in verbose mode
             ILogger logger = null;
             if (args.Length == 2 && args[1] == "-v")
             {
@@ -42,10 +46,16 @@ namespace EhterDelta.Bots.Dontnet
             {
                 new Taker(config, logger);
             }
-            else
+            else if(args[0] == "maker")
             {
                 new Maker(config, logger);
             }
+            else if (args[0] == "custom")
+            {
+                new Custom(config, logger);
+            }
+
+            Console.ReadLine();
         }
 
         private class ConsoleLogger : ILogger

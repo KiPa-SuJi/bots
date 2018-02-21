@@ -1,7 +1,8 @@
-using Nethereum.Util;
 using System;
+using EhterDelta.Bots.Dontnet;
+using Nethereum.Util;
 
-namespace EhterDelta.Bots.Dontnet
+namespace Bot
 {
     public class Taker : BaseBot
     {

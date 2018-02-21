@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EtherDeltaClient": {
+      "commandName": "Project",
+      "commandLineArgs": "custom"
+    }
+  }
+}
